@@ -32,7 +32,8 @@ public class SecurityConfig {
                                 "/",
                                         "/cart/**",
                                         "/order/**",
-                                        "/images/**"
+                                        "/images/**",
+                                        "/track"
                         ).permitAll()
 
                         .requestMatchers("/admin/**")

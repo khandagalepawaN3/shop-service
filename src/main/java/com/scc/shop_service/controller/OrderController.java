@@ -7,9 +7,8 @@ import com.scc.shop_service.entity.Order;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -58,10 +57,17 @@ public class OrderController {
         order.setStatus("PENDING");
         order.setOrderDate(LocalDateTime.now());
         order.setItems(orderItems);
-        orderService.save(order);
+        Order savedOrder = orderService.save(order);
 
         session.removeAttribute("cart");
-        return "redirect:/";
+        return "redirect:/order/success/" + savedOrder.getId();
         }
 
+        @GetMapping("/success/{id}")
+        public String orderSuccess(@PathVariable Long id, Model model){
+            Order order = orderService.getById(id);
+            model.addAttribute("order",order);
+
+            return "order-success";
+        }
     }
