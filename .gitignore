@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# SC & S project
+uploads/
+.env
+application-local.properties
