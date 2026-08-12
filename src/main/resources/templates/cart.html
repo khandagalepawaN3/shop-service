@@ -9,14 +9,34 @@
           rel="stylesheet">
 </head>
 <body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container mt-5">
 
-    <h2>Your Cart</h2>
+    <h2 class="mb-4">Your Cart</h2>
 
-    <table class="table">
+    <div th:if="${cart == null || cart.isEmpty()}"
+         class="text-center py-5">
 
-        <thead>
+        <h4>Your cart is empty</h4>
+
+        <p class="text-muted">
+            Add some delicious snacks from SC & S.
+        </p>
+
+        <a th:href="@{/}"
+           class="btn btn-primary">
+
+            Browse Snacks
+
+        </a>
+
+    </div>
+
+    <table class="table table-bordered align-middle"
+           th:if="${cart != null && !cart.isEmpty()}">
+
+        <thead class="table-dark">
         <tr>
             <th>Product</th>
             <th>Price</th>
@@ -67,13 +87,28 @@
 
     </table>
 
-    <h4>
-        Total Amount:
-        ₹ <span th:text = "${total}"></span>
-    </h4>
+    <div class="text-end mt-4">
+
+        <h4>
+            Total Amount:
+            ₹<span th:text="${total}"></span>
+        </h4>
+
+    </div>
 
     <hr>
     <h3>Place Order</h3>
+
+    <div class="card mt-4"
+         th:if="${cart != null && !cart.isEmpty()}">
+
+        <div class="card-body">
+
+            <h4 class="card-title">
+                Customer Details
+            </h4>
+
+            <hr>
 
     <form th:action="@{/order/place}" method="post">
 
@@ -92,6 +127,7 @@
         </button>
 
     </form>
+        </div>
 </div>
 
 </body>
