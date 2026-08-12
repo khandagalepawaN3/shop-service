@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
@@ -78,9 +79,8 @@ public class AdminController {
                 product.setImageUrl(fileName);
 
             }
-            catch(Exception e){
-
-                e.printStackTrace();
+            catch(IOException e){
+                throw new RuntimeException("Could not save image", e);
             }
         }
 
