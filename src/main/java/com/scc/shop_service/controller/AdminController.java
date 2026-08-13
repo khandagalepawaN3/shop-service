@@ -10,10 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.cloudinary.Cloudinary;
+import java.util.Map;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,6 +24,9 @@ public class AdminController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     @GetMapping
     public String adminPage(Model model){
@@ -60,27 +63,24 @@ public class AdminController {
         }
         product.setAvailable(true);
 
-        if(!imageFile.isEmpty()){
+        if (!imageFile.isEmpty()) {
 
-            try{
+            try {
 
-                String fileName =
-                        imageFile.getOriginalFilename();
+                Map uploadResult = cloudinary.uploader().upload(
+                        imageFile.getBytes(),
+                        Map.of("folder", "scs-products")
+                );
 
-                java.nio.file.Path uploadPath = java.nio.file.Paths.get("uploads");
+                String imageUrl =
+                        uploadResult.get("secure_url").toString();
 
-                java.nio.file.Files.createDirectories(uploadPath);
+                product.setImageUrl(imageUrl);
 
-                java.nio.file.Files.copy(
-                        imageFile.getInputStream(),
-                        uploadPath.resolve(fileName),
-                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
 
-                product.setImageUrl(fileName);
-
-            }
-            catch(IOException e){
-                throw new RuntimeException("Could not save image", e);
+                throw new RuntimeException(
+                        "Could not upload image to Cloudinary", e);
             }
         }
 

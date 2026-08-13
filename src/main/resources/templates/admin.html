@@ -120,7 +120,7 @@
 
         <td>
 
-            <img th:src="@{/images/{image}(image=${product.imageUrl})}"
+            <img th:src="${product.imageUrl}"
                  width="70"
                  height="70"
                  style="object-fit: cover;"

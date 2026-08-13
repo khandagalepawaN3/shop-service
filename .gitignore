@@ -36,3 +36,5 @@ build/
 uploads/
 .env
 application-local.properties
+*.pem
+*.key

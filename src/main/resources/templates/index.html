@@ -51,7 +51,7 @@
 
                 <div class="card h-100 shadow-sm">
 
-                    <img th:src="@{/images/{image}(image=${product.imageUrl})}"
+                    <img th:src="${product.imageUrl}"
                          class="card-img-top"
                          style="height: 220px; object-fit: cover;"
                          alt="Product Image">
